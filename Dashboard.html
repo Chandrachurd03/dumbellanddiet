@@ -1,91 +1,420 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Dumbell & Diet – Dashboard</title>
-  <style>
-    body {
-      background: #000;
-      color: #fff;
-      font-family: Arial, sans-serif;
-    }
-    .container {
-      max-width: 500px;
-      margin: 50px auto;
-      padding: 25px;
-      background: #111;
-      border-radius: 12px;
-      text-align: center;
-    }
-    h1 {
-      color: #ffc800;
-    }
-    .metric {
-      margin: 15px 0;
-      font-size: 18px;
-    }
-    .macro {
-      font-size: 20px;
-      font-weight: bold;
-      color: #ffc800;
-    }
-    a {
-      display: inline-block;
-      margin-top: 20px;
-      color: #ffc800;
-      text-decoration: none;
-    }
-  </style>
-</head>
+<style>
+  :root {
+    --dd-bg: #050505;
+    --dd-card: #111111;
+    --dd-card-soft: #171717;
+    --dd-border: #333333;
+    --dd-yellow: #ffc800;
+    --dd-yellow-soft: #ffdd55;
+    --dd-text: #f5f5f5;
+    --dd-muted: #aaaaaa;
+    --dd-radius-card: 26px;
+    --dd-shadow-soft: 0 20px 50px rgba(0,0,0,0.9);
+  }
 
-<body>
-  <div class="container">
-    <h1>Your Dashboard</h1>
+  body { background:#000; }
 
-    <div class="metric">Calories: <span id="calories"></span></div>
-    <div class="metric macro">Protein: <span id="protein"></span></div>
-    <div class="metric macro">Carbs: <span id="carbs"></span></div>
-    <div class="metric macro">Fats: <span id="fats"></span></div>
+  .dd-dashboard-page {
+    max-width: 950px;
+    margin: 40px auto 60px;
+    padding: 0 16px 40px;
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--dd-text);
+  }
 
-    <a href="index.html">← Back to Calculator</a>
+  /* HEADER */
+
+  .dd-pro-badge {
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:6px 14px;
+    border-radius:999px;
+    background:rgba(0,0,0,0.9);
+    border:1px solid rgba(255,200,0,0.45);
+    color:var(--dd-yellow);
+    font-size:12px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    box-shadow:0 10px 26px rgba(0,0,0,0.8);
+    margin-bottom:8px;
+  }
+  .dd-pro-dot {
+    width:16px;
+    height:16px;
+    border-radius:999px;
+    background:radial-gradient(circle at 30% 0,#ffe27a 0,#ffb800 40%,#ff9100 80%);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#111;
+    font-size:11px;
+    font-weight:800;
+  }
+
+  .dd-header {
+    text-align:center;
+    margin-bottom:24px;
+  }
+  .dd-header-title {
+    font-size:34px;
+    text-transform:uppercase;
+    letter-spacing:0.14em;
+    font-weight:800;
+  }
+  .dd-header-title span.highlight {
+    color:var(--dd-yellow);
+  }
+  .dd-header-sub {
+    margin-top:6px;
+    font-size:13px;
+    color:var(--dd-muted);
+  }
+
+  /* MAIN CARD */
+
+  .dd-main-card {
+    background: radial-gradient(circle at top left,#1d1d1d 0,#050505 55%,#000 100%);
+    border-radius:var(--dd-radius-card);
+    box-shadow:var(--dd-shadow-soft);
+    padding:26px 28px 26px;
+    border:1px solid #262626;
+    margin-bottom:26px;
+  }
+
+  .dd-section-label {
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:0.18em;
+    color:var(--dd-muted);
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:22px;
+  }
+  .dd-section-label-icon {
+    width:18px;
+    height:18px;
+    border-radius:4px;
+    border:1px solid #555;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+  }
+
+  .dd-main-calories {
+    text-align:center;
+    margin-bottom:22px;
+  }
+  .dd-main-calories-value {
+    font-size:40px;
+    font-weight:800;
+    color:var(--dd-yellow);
+    letter-spacing:0.05em;
+  }
+  .dd-main-calories-unit {
+    font-size:16px;
+    margin-left:6px;
+    color:#cccccc;
+  }
+  .dd-main-calories-goal {
+    margin-top:6px;
+    font-size:13px;
+    color:var(--dd-muted);
+  }
+
+  .dd-metrics-row {
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    margin-top:10px;
+    padding-top:16px;
+    border-top:1px solid #262626;
+  }
+  .dd-metric-card {
+    flex:1 1 21%;
+    min-width:135px;
+    border-radius:18px;
+    background:var(--dd-card-soft);
+    padding:12px 14px;
+    text-align:center;
+  }
+  .dd-metric-value {
+    font-size:16px;
+    font-weight:700;
+  }
+  .dd-metric-label {
+    margin-top:4px;
+    font-size:11px;
+    text-transform:uppercase;
+    color:var(--dd-muted);
+    letter-spacing:0.14em;
+  }
+
+  /* MACRO CARD */
+
+  .dd-macro-section-title {
+    margin-top:26px;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:0.2em;
+    color:var(--dd-muted);
+    font-weight:600;
+  }
+
+  .dd-macro-row {
+    margin-top:14px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+  }
+  .dd-macro-card {
+    flex:1 1 30%;
+    min-width:150px;
+    border-radius:18px;
+    padding:16px 14px 12px;
+    text-align:center;
+    background:linear-gradient(145deg,#2d2614,#14120c);
+    border:1px solid rgba(255,200,0,0.35);
+    box-shadow:0 12px 30px rgba(0,0,0,0.85);
+  }
+  .dd-macro-card:nth-child(2) {
+    background:linear-gradient(145deg,#262626,#141414);
+  }
+  .dd-macro-card:nth-child(3) {
+    background:linear-gradient(145deg,#251822,#140d11);
+  }
+  .dd-macro-value {
+    font-size:22px;
+    font-weight:800;
+    color:var(--dd-yellow);
+  }
+  .dd-macro-label {
+    margin-top:4px;
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--dd-muted);
+  }
+
+  .dd-macro-footer {
+    margin-top:18px;
+    border-radius:18px;
+    background:#0e0e0e;
+    border:1px solid #232323;
+    padding:14px 16px 18px;
+    text-align:center;
+    color:var(--dd-muted);
+    font-size:13px;
+  }
+
+  .dd-download-btn {
+    margin-top:10px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:11px 22px;
+    border-radius:999px;
+    border:none;
+    cursor:pointer;
+    background:linear-gradient(90deg,#ffc800,#ffdd55);
+    color:#111;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    box-shadow:0 15px 36px rgba(255,200,0,0.45);
+  }
+  .dd-download-btn-icon {
+    font-size:14px;
+  }
+
+  /* HISTORY CARD */
+
+  .dd-history-card {
+    margin-top:28px;
+    background:var(--dd-card);
+    border-radius:var(--dd-radius-card);
+    padding:20px 24px 22px;
+    border:1px solid #262626;
+    box-shadow:0 18px 42px rgba(0,0,0,0.85);
+  }
+  .dd-history-header {
+    font-size:14px;
+    text-transform:uppercase;
+    letter-spacing:0.18em;
+    font-weight:600;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:16px;
+  }
+  .dd-history-icon {
+    font-size:16px;
+  }
+
+  .dd-history-item {
+    background:#121212;
+    border-radius:16px;
+    padding:12px 16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+    border:1px solid #222;
+  }
+  .dd-history-main {
+    font-size:14px;
+    font-weight:600;
+  }
+  .dd-history-sub {
+    font-size:11px;
+    color:var(--dd-muted);
+    margin-top:2px;
+  }
+  .dd-history-macros {
+    font-size:11px;
+    color:var(--dd-muted);
+  }
+
+  .dd-newcalc-wrap {
+    text-align:center;
+    margin-top:26px;
+  }
+  .dd-newcalc-btn {
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:12px 28px;
+    border-radius:999px;
+    border:1px solid rgba(255,200,0,0.65);
+    background:transparent;
+    color:var(--dd-yellow);
+    font-size:13px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.16em;
+    cursor:pointer;
+  }
+
+  @media (max-width:720px) {
+    .dd-metric-card { min-width:48%; }
+    .dd-macro-card { min-width:48%; }
+  }
+</style>
+
+<div class="dd-dashboard-page">
+
+  
+  <div class="dd-header">
+    <div class="dd-pro-badge">
+      <span class="dd-pro-dot">★</span>
+      <span>Pro Member</span>
+    </div>
+    <div class="dd-header-title">
+      YOUR <span class="highlight">DASHBOARD</span>
+    </div>
+    <div class="dd-header-sub">
+      Based on your last free calorie calculation of <strong>{{ calories }}</strong> kcal and goal: {{ goal }}.
+    </div>
   </div>
 
-  <script>
-    const storedData = localStorage.getItem("dd_user_data");
+  
+  <section class="dd-main-card">
+    <div class="dd-section-label">
+      <span class="dd-section-label-icon">▢</span>
+      <span>Daily Calorie Intake</span>
+    </div>
 
-    if (!storedData) {
-      alert("No data found. Please calculate calories first.");
-      window.location.href = "index.html";
-    }
+    <div class="dd-main-calories">
+      <span class="dd-main-calories-value">{{ calories }}</span>
+      <span class="dd-main-calories-unit">KCAL</span>
+      <div class="dd-main-calories-goal">Goal: {{ goal }}</div>
+    </div>
 
-    const data = JSON.parse(storedData);
-    const calories = data.calories;
-    const goal = data.goal;
+    
+    <div class="dd-metrics-row">
+      <div class="dd-metric-card">
+        <div class="dd-metric-value">{{ bmr }}</div>
+        <div class="dd-metric-label">BMR</div>
+      </div>
+      <div class="dd-metric-card">
+        <div class="dd-metric-value">{{ tdee }}</div>
+        <div class="dd-metric-label">TDEE</div>
+      </div>
+      <div class="dd-metric-card">
+        <div class="dd-metric-value">{{ weight_kg }}kg</div>
+        <div class="dd-metric-label">Weight</div>
+      </div>
+      <div class="dd-metric-card">
+        <div class="dd-metric-value">{{ height_cm }}cm</div>
+        <div class="dd-metric-label">Height</div>
+      </div>
+    </div>
 
-    let protein = 0, carbs = 0, fats = 0;
+    <div class="dd-macro-section-title">Macro Breakdown</div>
 
-    if (goal === "loss") {
-      protein = (calories * 0.4) / 4;
-      carbs = (calories * 0.4) / 4;
-      fats = (calories * 0.2) / 9;
-    }
+    <div class="dd-macro-row">
+      <div class="dd-macro-card">
+        <div class="dd-macro-value">{{ protein_g }}g</div>
+        <div class="dd-macro-label">Protein</div>
+      </div>
+      <div class="dd-macro-card">
+        <div class="dd-macro-value">{{ carb_g }}g</div>
+        <div class="dd-macro-label">Carbohydrates</div>
+      </div>
+      <div class="dd-macro-card">
+        <div class="dd-macro-value">{{ fat_g }}g</div>
+        <div class="dd-macro-label">Fats</div>
+      </div>
+    </div>
 
-    if (goal === "maintain") {
-      protein = (calories * 0.3) / 4;
-      carbs = (calories * 0.45) / 4;
-      fats = (calories * 0.25) / 9;
-    }
+    <div class="dd-macro-footer">
+      Download your personalized diet log template (included in your ₹49 Pro plan).
+      <br>
+      <button class="dd-download-btn">
+        <span class="dd-download-btn-icon">⬇</span>
+        <span>Download Diet Log Template</span>
+      </button>
+    </div>
+  </section>
 
-    if (goal === "bulk") {
-      protein = (calories * 0.25) / 4;
-      carbs = (calories * 0.55) / 4;
-      fats = (calories * 0.2) / 9;
-    }
+  
+  <section class="dd-history-card">
+    <div class="dd-history-header">
+      <span class="dd-history-icon">⟳</span>
+      <span>Calculation History</span>
+    </div>
 
-    document.getElementById("calories").innerText = calories + " kcal";
-    document.getElementById("protein").innerText = Math.round(protein) + " g";
-    document.getElementById("carbs").innerText = Math.round(carbs) + " g";
-    document.getElementById("fats").innerText = Math.round(fats) + " g";
-  </script>
-</body>
-</html>
+    
+    <div class="dd-history-item">
+      <div>
+        <div class="dd-history-main">{{ last_calories_1 }} KCAL</div>
+        <div class="dd-history-sub">{{ last_goal_1 }} • {{ last_date_1 }}</div>
+      </div>
+      <div class="dd-history-macros">
+        P: {{ last_p_1 }}g &nbsp; C: {{ last_c_1 }}g &nbsp; F: {{ last_f_1 }}g
+      </div>
+    </div>
+
+    <div class="dd-history-item">
+      <div>
+        <div class="dd-history-main">{{ last_calories_2 }} KCAL</div>
+        <div class="dd-history-sub">{{ last_goal_2 }} • {{ last_date_2 }}</div>
+      </div>
+      <div class="dd-history-macros">
+        P: {{ last_p_2 }}g &nbsp; C: {{ last_c_2 }}g &nbsp; F: {{ last_f_2 }}g
+      </div>
+    </div>
+    
+  </section>
+
+  <div class="dd-newcalc-wrap">
+    <button class="dd-newcalc-btn" onclick="window.location.href='/your-free-calculator-url';">
+      New Calculation
+    </button>
+  </div>
+</div>
