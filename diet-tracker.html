@@ -1,0 +1,646 @@
+<style>
+  :root {
+    --dd-bg: #050505;
+    --dd-card: #111111;
+    --dd-card-soft: #171717;
+    --dd-border: #262626;
+    --dd-yellow: #ffc800;
+    --dd-yellow-soft: #ffdd55;
+    --dd-text: #f5f5f5;
+    --dd-muted: #b3b3b3;
+    --dd-radius-card: 24px;
+    --dd-shadow-soft: 0 20px 45px rgba(0,0,0,0.85);
+  }
+
+  .dt-page {
+    max-width: 1000px;
+    margin: 40px auto 60px;
+    padding: 0 16px;
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--dd-text);
+  }
+
+  .dt-card {
+    background: radial-gradient(circle at top left,#1a1a1a 0,#050505 55%,#000 100%);
+    border-radius: var(--dd-radius-card);
+    padding: 24px 24px 26px;
+    border: 1px solid var(--dd-border);
+    box-shadow: var(--dd-shadow-soft);
+  }
+
+  .dt-header-badge {
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:6px 16px;
+    border-radius:999px;
+    background:rgba(0,0,0,0.85);
+    border:1px solid rgba(255,200,0,0.4);
+    color:var(--dd-yellow);
+    font-size:11px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .dt-badge-dot {
+    width:14px;
+    height:14px;
+    border-radius:999px;
+    background:radial-gradient(circle at 30% 0,#ffe27a 0,#ffb800 40%,#ff9100 75%);
+  }
+
+  .dt-title {
+    font-size:24px;
+    font-weight:800;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+  }
+  .dt-title span {
+    color:var(--dd-yellow);
+  }
+  .dt-sub {
+    font-size:13px;
+    color:var(--dd-muted);
+    margin-top:6px;
+    margin-bottom:18px;
+  }
+
+  .dt-targets {
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    margin-bottom:16px;
+  }
+  .dt-target-pill {
+    flex:1 1 22%;
+    min-width:150px;
+    background:#111111;
+    border-radius:18px;
+    padding:10px 12px 12px;
+    border:1px solid #272727;
+  }
+  .dt-target-pill label {
+    display:block;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:0.16em;
+    color:var(--dd-muted);
+    margin-bottom:4px;
+  }
+  .dt-target-pill input {
+    width:100%;
+    border-radius:12px;
+    border:1px solid #333;
+    background:#050505;
+    color:#f5f5f5;
+    padding:7px 9px;
+    font-size:13px;
+    box-sizing:border-box;
+  }
+
+  .dt-section-label {
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.18em;
+    color:var(--dd-muted);
+    margin:14px 0 8px;
+  }
+
+  .dt-add-row {
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin-bottom:10px;
+  }
+  .dt-add-row select,
+  .dt-add-row input {
+    border-radius:14px;
+    border:1px solid #333;
+    background:#101010;
+    color:#f5f5f5;
+    padding:7px 10px;
+    font-size:13px;
+  }
+  .dt-add-row select {
+    min-width:130px;
+  }
+  .dt-add-row input[type="number"] {
+    width:120px;
+  }
+  .dt-add-row input::placeholder {
+    color:#666;
+  }
+
+  .dt-add-btn,
+  .dt-download-btn {
+    padding:9px 20px;
+    border-radius:999px;
+    border:none;
+    background:linear-gradient(90deg,var(--dd-yellow),var(--dd-yellow-soft));
+    color:#111;
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    cursor:pointer;
+    box-shadow:0 16px 36px rgba(255,200,0,0.45);
+  }
+  .dt-download-btn {
+    margin-top:12px;
+    background:linear-gradient(90deg,#8bffb2,#31c48d);
+    box-shadow:0 16px 36px rgba(49,196,141,0.45);
+  }
+
+  table.dt-table {
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    margin-top:10px;
+    font-size:13px;
+    border-radius:18px;
+    overflow:hidden;
+    background:#101010;
+    border:1px solid #272727;
+  }
+  .dt-table th,
+  .dt-table td {
+    padding:7px 8px;
+    text-align:center;
+    border-bottom:1px solid #242424;
+    border-right:1px solid #242424;
+  }
+  .dt-table th:last-child,
+  .dt-table td:last-child {
+    border-right:none;
+  }
+  .dt-table tr:last-child td {
+    border-bottom:none;
+  }
+  .dt-table th {
+    background:#171717;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    font-size:10px;
+    color:#c7c7c7;
+  }
+  .dt-meal-col,
+  .dt-food-col {
+    text-align:left;
+  }
+
+  .dt-remove-btn {
+    background:none;
+    border:none;
+    color:#f97373;
+    cursor:pointer;
+    font-size:12px;
+  }
+
+  .dt-summary {
+    margin-top:16px;
+    padding:12px 14px 14px;
+    border-radius:18px;
+    background:#0c0c0c;
+    border:1px solid #202020;
+  }
+  .dt-summary-row {
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .dt-summary-pill {
+    flex:1 1 22%;
+    min-width:150px;
+    padding:9px 10px;
+    border-radius:14px;
+    background:#151515;
+    border:1px solid #262626;
+  }
+  .dt-summary-pill span.label {
+    display:block;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:0.16em;
+    color:#b3b3b3;
+    margin-bottom:4px;
+  }
+  .dt-summary-pill span.value {
+    font-weight:700;
+    font-size:14px;
+  }
+  .dt-summary-pill.good {
+    border-color:#31c48d;
+    box-shadow:0 0 0 1px rgba(49,196,141,0.35);
+  }
+  .dt-summary-pill.bad {
+    border-color:#f97373;
+    box-shadow:0 0 0 1px rgba(249,115,115,0.35);
+  }
+  .dt-info {
+    margin-top:8px;
+    font-size:11px;
+    color:#8f8f8f;
+  }
+
+  @media (max-width:768px){
+    .dt-target-pill,
+    .dt-summary-pill { flex:1 1 48%; }
+  }
+</style>
+
+<div class="dt-page">
+  <div class="dt-card">
+    <div class="dt-header-badge">
+      <span class="dt-badge-dot"></span>
+      DAILY MACRO TRACKER
+    </div>
+    <div class="dt-title">
+      Track Your <span>Meals</span> Against Today’s Targets
+    </div>
+    <div class="dt-sub">
+      Add what you eat, and this tracker will auto‑calculate calories, protein, carbs and fats to show how closely you are hitting your plan.
+    </div>
+
+    
+    <div class="dt-section-label">Today's Targets</div>
+    <div class="dt-targets">
+      <div class="dt-target-pill">
+        <label for="targetCalories">Calories (kcal)</label>
+        <input type="number" id="targetCalories" value="1900">
+      </div>
+      <div class="dt-target-pill">
+        <label for="targetProtein">Protein (g)</label>
+        <input type="number" id="targetProtein" value="140">
+      </div>
+      <div class="dt-target-pill">
+        <label for="targetCarbs">Carbs (g)</label>
+        <input type="number" id="targetCarbs" value="180">
+      </div>
+      <div class="dt-target-pill">
+        <label for="targetFats">Fats (g)</label>
+        <input type="number" id="targetFats" value="60">
+      </div>
+    </div>
+
+    
+    <div class="dt-section-label">Add a meal</div>
+    <div class="dt-add-row">
+      <select id="mealType">
+        <option value="Breakfast">Breakfast</option>
+        <option value="Brunch">Brunch</option>
+        <option value="Lunch">Lunch</option>
+        <option value="Snacks">Snacks</option>
+        <option value="Dinner">Dinner</option>
+      </select>
+
+      <input list="foodList" id="foodName" placeholder="Food (from list)">
+      <datalist id="foodList">
+        <option value="Amul Paneer"></option>
+        <option value="Soya Chunks"></option>
+        <option value="Whey Protein"></option>
+        <option value="Spinach"></option>
+        <option value="Boiled eggs whites"></option>
+        <option value="Boiled egg"></option>
+        <option value="Chicken breast"></option>
+        <option value="Potato"></option>
+        <option value="White Rice"></option>
+        <option value="Dal"></option>
+        <option value="Brown Bread"></option>
+        <option value="Oats"></option>
+        <option value="Poha"></option>
+        <option value="Milk"></option>
+        <option value="Cooked white rice"></option>
+        <option value="Cucumber"></option>
+        <option value="White bread"></option>
+        <option value="Cashew"></option>
+        <option value="Almonds"></option>
+        <option value="Fish"></option>
+        <option value="Milky Mist Curd"></option>
+        <option value="Yellow Peas"></option>
+        <option value="Chicken Lollipop"></option>
+        <option value="Tandoori Chicken"></option>
+        <option value="Long beans(Lobiya)"></option>
+        <option value="Ghee"></option>
+        <option value="Mustard oil"></option>
+        <option value="Uncooked rice"></option>
+        <option value="mutton"></option>
+        <option value="Raw Mutton"></option>
+        <option value="Lady finger"></option>
+        <option value="Bitter Gourd(Karela)"></option>
+        <option value="Puffed Rice"></option>
+        <option value="Chicken"></option>
+        <option value="Chicken liver"></option>
+        <option value="50-50 cookies"></option>
+        <option value="Red tea"></option>
+        <option value="Mangoes"></option>
+        <option value="Onion"></option>
+        <option value="Bournville (70% dark)"></option>
+        <option value="Britania Nutrichoice Digestive"></option>
+        <option value="Jaggery"></option>
+        <option value="Raw Green Banana"></option>
+        <option value="Brinjal (Eggplant)"></option>
+        <option value="Chick Peas"></option>
+        <option value="Pointed Gourd"></option>
+        <option value="Processed Sugar"></option>
+        <option value="Yellow Peas (alt)"></option>
+        <option value="Bottle Gourd"></option>
+        <option value="Makhana"></option>
+        <option value="Idli"></option>
+        <option value="Amul Milk Powder"></option>
+        <option value="Amul Tazza"></option>
+        <option value="Sambar"></option>
+        <option value="Green Peas"></option>
+        <option value="Masala Oats"></option>
+        <option value="Besan"></option>
+        <option value="Jalebi"></option>
+        <option value="White rice uncooked"></option>
+        <option value="Cabbage"></option>
+        <option value="Guava"></option>
+        <option value="Muesli True elements"></option>
+        <option value="Plant based protein"></option>
+        <option value="True elemets Chia seeds"></option>
+        <option value="Amul Skimmed Milk"></option>
+        <option value="Banana (Yellow)"></option>
+        <option value="Roti"></option>
+        <option value="Mix vegetable frozen"></option>
+        <option value="Black chana"></option>
+        <option value="Carrot"></option>
+        <option value="Cosmix whey protein"></option>
+        <option value="Idly Dosa Batter"></option>
+        <option value="Ivy Gourd"></option>
+        <option value="Roasted peanut"></option>
+        <option value="Brown Rice"></option>
+        <option value="Batter"></option>
+        <option value="Apples"></option>
+        <option value="Banana"></option>
+        <option value="Orange"></option>
+        <option value="Pomegranate"></option>
+        <option value="Papaya"></option>
+      </datalist>
+
+      <input type="number" id="amount" placeholder="Amount (g/ml)" min="1">
+
+      <button class="dt-add-btn" type="button" onclick="addFoodRow()">Add food</button>
+    </div>
+
+    
+    <table class="dt-table" id="dietTable">
+      <thead>
+      <tr>
+        <th>Meal</th>
+        <th>Food</th>
+        <th>Amount (g/ml)</th>
+        <th>Calories</th>
+        <th>Protein (g)</th>
+        <th>Carbs (g)</th>
+        <th>Fats (g)</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
+    <button class="dt-download-btn" type="button" onclick="downloadMealCSV()">
+      Download today’s log (CSV)
+    </button>
+
+    
+    <div class="dt-summary">
+      <div class="dt-summary-row">
+        <div class="dt-summary-pill" id="sumCaloriesBox">
+          <span class="label">Total Calories</span>
+          <span class="value" id="totalCalories">0</span>
+        </div>
+        <div class="dt-summary-pill" id="sumProteinBox">
+          <span class="label">Total Protein (g)</span>
+          <span class="value" id="totalProtein">0</span>
+        </div>
+        <div class="dt-summary-pill" id="sumCarbsBox">
+          <span class="label">Total Carbs (g)</span>
+          <span class="value" id="totalCarbs">0</span>
+        </div>
+        <div class="dt-summary-pill" id="sumFatsBox">
+          <span class="label">Total Fats (g)</span>
+          <span class="value" id="totalFats">0</span>
+        </div>
+      </div>
+      <div class="dt-info">
+        When a box turns green, you are within ±10% of your target for that macro. Red means you are significantly over or under.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const foodDB = {
+  "Amul Paneer": { kcal: 312.0, protein: 20.0, carbs: 4.0, fats: 24.0 },
+  "Soya Chunks": { kcal: 345.0, protein: 52.0, carbs: 33.0, fats: 0.5 },
+  "Whey Protein": { kcal: 130.0, protein: 25.0, carbs: 5.0, fats: 1.8 },
+  "Spinach": { kcal: 23.0, protein: 2.86, carbs: 3.63, fats: 0.39 },
+  "Boiled eggs whites": { kcal: 17.0, protein: 3.6, carbs: 0.0, fats: 0.0 },
+  "Boiled egg": { kcal: 78.0, protein: 6.36, carbs: 0.6, fats: 5.36 },
+  "Chicken breast": { kcal: 165.0, protein: 31.0, carbs: 0.0, fats: 3.6 },
+  "Potato": { kcal: 93.0, protein: 2.5, carbs: 21.0, fats: 0.1 },
+  "White Rice": { kcal: 130.0, protein: 2.7, carbs: 28.0, fats: 0.3 },
+  "Dal": { kcal: 101.0, protein: 5.29, carbs: 13.36, fats: 3.23 },
+  "Brown Bread": { kcal: 218.0, protein: 8.5, carbs: 44.3, fats: 2.0 },
+  "Oats": { kcal: 389.0, protein: 17.0, carbs: 66.0, fats: 7.0 },
+  "Poha": { kcal: 358.0, protein: 6.5, carbs: 78.3, fats: 0.5 },
+  "Milk": { kcal: 52.0, protein: 3.39, carbs: 4.86, fats: 2.06 },
+  "Cooked white rice": { kcal: 130.0, protein: 2.64, carbs: 28.0, fats: 1.07 },
+  "Cucumber": { kcal: 15.0, protein: 0.7, carbs: 3.6, fats: 0.1 },
+  "White bread": { kcal: 266.0, protein: 7.64, carbs: 50.16, fats: 3.29 },
+  "Cashew": { kcal: 553.0, protein: 18.22, carbs: 30.19, fats: 43.85 },
+  "Almonds": { kcal: 579.0, protein: 21.0, carbs: 22.0, fats: 50.0 },
+  "Fish": { kcal: 84.0, protein: 17.76, carbs: 0.0, fats: 0.92 },
+  "Milky Mist Curd": { kcal: 61.8, protein: 3.5, carbs: 5.2, fats: 3.0 },
+  "Yellow Peas": { kcal: 341.0, protein: 25.0, carbs: 60.0, fats: 1.0 },
+  "Chicken Lollipop": { kcal: 328.0, protein: 16.7, carbs: 9.6, fats: 24.1 },
+  "Tandoori Chicken": { kcal: 131.5, protein: 15.5, carbs: 3.1, fats: 6.0 },
+  "Long beans(Lobiya)": { kcal: 47.0, protein: 2.8, carbs: 8.35, fats: 0.4 },
+  "Ghee": { kcal: 861.3, protein: 0.3, carbs: 0.0, fats: 100.0 },
+  "Mustard oil": { kcal: 885.0, protein: 0.0, carbs: 0.0, fats: 100.0 },
+  "Uncooked rice": { kcal: 358.0, protein: 6.5, carbs: 79.0, fats: 0.5 },
+  "mutton": { kcal: 450.0, protein: 22.0, carbs: 50.0, fats: 18.0 },
+  "Raw Mutton": { kcal: 294.2, protein: 24.7, carbs: 0.0, fats: 21.2 },
+  "Lady finger": { kcal: 22.0, protein: 1.9, carbs: 4.5, fats: 0.2 },
+  "Bitter Gourd(Karela)": { kcal: 19.3, protein: 0.8, carbs: 4.4, fats: 0.2 },
+  "Puffed Rice": { kcal: 400.0, protein: 6.3, carbs: 92.8, fats: 0.5 },
+  "Chicken": { kcal: 165.0, protein: 31.0, carbs: 0.0, fats: 3.6 },
+  "Chicken liver": { kcal: 167.0, protein: 24.0, carbs: 0.9, fats: 6.5 },
+  "50-50 cookies": { kcal: 525.0, protein: 7.7, carbs: 63.8, fats: 26.5 },
+  "Red tea": { kcal: 5.0, protein: 0.0, carbs: 2.0, fats: 0.0 },
+  "Mangoes": { kcal: 60.0, protein: 0.8, carbs: 15.0, fats: 0.4 },
+  "Onion": { kcal: 43.9, protein: 1.4, carbs: 10.2, fats: 0.2 },
+  "Bournville (70% dark)": { kcal: 597.0, protein: 7.5, carbs: 39.0, fats: 24.4 },
+  "Britania Nutrichoice Digestive": { kcal: 481.0, protein: 9.1, carbs: 68.0, fats: 20.9 },
+  "Jaggery": { kcal: 383.0, protein: 0.09, carbs: 98.96, fats: 0.0 },
+  "Raw Green Banana": { kcal: 89.0, protein: 1.09, carbs: 22.8, fats: 1.09 },
+  "Brinjal (Eggplant)": { kcal: 35.0, protein: 0.8, carbs: 8.7, fats: 0.2 },
+  "Chick Peas": { kcal: 164.1, protein: 9.2, carbs: 27.5, fats: 2.6 },
+  "Pointed Gourd": { kcal: 19.0, protein: 1.89, carbs: 3.52, fats: 0.27 },
+  "Processed Sugar": { kcal: 377.3, protein: 0.0, carbs: 100.0, fats: 0.0 },
+  "Yellow Peas (alt)": { kcal: 316.0, protein: 21.1, carbs: 66.0, fats: 1.3 },
+  "Bottle Gourd": { kcal: 14.0, protein: 0.62, carbs: 3.39, fats: 0.02 },
+  "Makhana": { kcal: 347.0, protein: 9.7, carbs: 76.9, fats: 0.1 },
+  "Idli": { kcal: 140.0, protein: 6.0, carbs: 41.0, fats: 0.62 },
+  "Amul Milk Powder": { kcal: 450.0, protein: 22.0, carbs: 50.0, fats: 18.0 },
+  "Amul Tazza": { kcal: 58.0, protein: 3.0, carbs: 4.8, fats: 3.0 },
+  "Sambar": { kcal: 52.0, protein: 2.8, carbs: 10.5, fats: 0.3 },
+  "Green Peas": { kcal: 84.0, protein: 5.4, carbs: 16.0, fats: 0.2 },
+  "Masala Oats": { kcal: 376.0, protein: 8.8, carbs: 69.2, fats: 9.9 },
+  "Besan": { kcal: 387.0, protein: 22.39, carbs: 57.82, fats: 6.69 },
+  "Jalebi": { kcal: 300.0, protein: 4.19, carbs: 62.36, fats: 4.31 },
+  "White rice uncooked": { kcal: 356.0, protein: 6.5, carbs: 80.0, fats: 0.5 },
+  "Cabbage": { kcal: 23.0, protein: 1.3, carbs: 5.5, fats: 0.1 },
+  "Guava": { kcal: 68.0, protein: 2.6, carbs: 14.0, fats: 1.0 },
+  "Muesli True elements": { kcal: 436.3, protein: 13.2, carbs: 67.5, fats: 12.5 },
+  "Plant based protein": { kcal: 145.8, protein: 61.2, carbs: 61.2, fats: 1.62 },
+  "True elemets Chia seeds": { kcal: 508.6, protein: 17.1, carbs: 39.0, fats: 31.5 },
+  "Amul Skimmed Milk": { kcal: 35.0, protein: 3.5, carbs: 5.0, fats: 0.1 },
+  "Banana (Yellow)": { kcal: 89.0, protein: 1.1, carbs: 22.8, fats: 0.3 },
+  "Roti": { kcal: 100.0, protein: 7.85, carbs: 46.13, fats: 9.2 },
+  "Mix vegetable frozen": { kcal: 64.0, protein: 3.33, carbs: 13.46, fats: 0.52 },
+  "Black chana": { kcal: 370.0, protein: 20.12, carbs: 64.44, fats: 3.51 },
+  "Carrot": { kcal: 40.0, protein: 0.8, carbs: 8.2, fats: 0.2 },
+  "Cosmix whey protein": { kcal: 38.0, protein: 23.85, carbs: 143.78, fats: 0.79 },
+  "Idly Dosa Batter": { kcal: 145.0, protein: 4.6, carbs: 30.8, fats: 0.3 },
+  "Ivy Gourd": { kcal: 21.0, protein: 1.4, carbs: 3.4, fats: 0.2 },
+  "Roasted peanut": { kcal: 567.0, protein: 25.8, carbs: 16.0, fats: 50.0 },
+  "Brown Rice": { kcal: 362.0, protein: 9.17, carbs: 78.39, fats: 1.07 },
+  "Batter": { kcal: 141.0, protein: 5.5, carbs: 26.3, fats: 1.6 },
+  "Apples": { kcal: 52.0, protein: 0.3, carbs: 14.0, fats: 0.2 },
+  "Banana": { kcal: 89.0, protein: 1.1, carbs: 23.0, fats: 0.3 },
+  "Orange": { kcal: 49.0, protein: 0.9, carbs: 13.0, fats: 0.2 },
+  "Pomegranate": { kcal: 83.0, protein: 1.7, carbs: 19.0, fats: 1.2 },
+  "Papaya": { kcal: 42.8, protein: 0.5, carbs: 11.0, fats: 0.3 }
+};
+
+function addFoodRow() {
+  const meal = document.getElementById('mealType').value;
+  const food = document.getElementById('foodName').value.trim();
+  const amount = parseFloat(document.getElementById('amount').value);
+
+  if (!foodDB[food]) {
+    alert('Please choose a food from the list (or update the food database).');
+    return;
+  }
+  if (!amount || amount <= 0) {
+    alert('Enter a valid amount in grams/ml.');
+    return;
+  }
+
+  const per100 = foodDB[food];
+  const factor = amount / 100.0;
+  const kcal = per100.kcal * factor;
+  const p = per100.protein * factor;
+  const c = per100.carbs * factor;
+  const f = per100.fats * factor;
+
+  const tbody = document.querySelector('#dietTable tbody');
+  const tr = document.createElement('tr');
+
+  tr.innerHTML = `
+    <td class="dt-meal-col">${meal}</td>
+    <td class="dt-food-col">${food}</td>
+    <td>${amount.toFixed(0)}</td>
+    <td>${kcal.toFixed(0)}</td>
+    <td>${p.toFixed(1)}</td>
+    <td>${c.toFixed(1)}</td>
+    <td>${f.toFixed(1)}</td>
+    <td><button class="dt-remove-btn" type="button" onclick="removeRow(this)">✕</button></td>
+  `;
+
+  tbody.appendChild(tr);
+  document.getElementById('foodName').value = '';
+  document.getElementById('amount').value = '';
+  updateTotals();
+}
+
+function removeRow(btn) {
+  const row = btn.closest('tr');
+  if (row) {
+    row.parentNode.removeChild(row);
+    updateTotals();
+  }
+}
+
+function updateTotals() {
+  let kcal = 0, p = 0, c = 0, f = 0;
+  const rows = document.querySelectorAll('#dietTable tbody tr');
+  rows.forEach(r => {
+    kcal += parseFloat(r.children[3].textContent) || 0;
+    p    += parseFloat(r.children[4].textContent) || 0;
+    c    += parseFloat(r.children[5].textContent) || 0;
+    f    += parseFloat(r.children[6].textContent) || 0;
+  });
+
+  document.getElementById('totalCalories').textContent = kcal.toFixed(0);
+  document.getElementById('totalProtein').textContent  = p.toFixed(1);
+  document.getElementById('totalCarbs').textContent    = c.toFixed(1);
+  document.getElementById('totalFats').textContent     = f.toFixed(1);
+
+  highlightBox('sumCaloriesBox', kcal, parseFloat(document.getElementById('targetCalories').value));
+  highlightBox('sumProteinBox',  p,    parseFloat(document.getElementById('targetProtein').value));
+  highlightBox('sumCarbsBox',    c,    parseFloat(document.getElementById('targetCarbs').value));
+  highlightBox('sumFatsBox',     f,    parseFloat(document.getElementById('targetFats').value));
+}
+
+function highlightBox(boxId, actual, target) {
+  const box = document.getElementById(boxId);
+  box.classList.remove('good','bad');
+  if (!target || target <= 0) return;
+
+  const diff = Math.abs(actual - target) / target;
+  if (diff <= 0.10) {
+    box.classList.add('good');
+  } else {
+    box.classList.add('bad');
+  }
+}
+
+['targetCalories','targetProtein','targetCarbs','targetFats'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('change', updateTotals);
+});
+
+function downloadMealCSV() {
+  const table = document.getElementById('dietTable');
+  const rows = table.querySelectorAll('tr');
+  if (rows.length <= 1) {
+    alert('Add at least one food before downloading.');
+    return;
+  }
+
+  const lines = [];
+  lines.push(['Meal','Food','Amount (g/ml)','Calories','Protein (g)','Carbs (g)','Fats (g)'].join(','));
+
+  const bodyRows = table.querySelectorAll('tbody tr');
+  bodyRows.forEach(row => {
+    const cells = row.querySelectorAll('td');
+    const values = [];
+    for (let i = 0; i < 7; i++) {
+      let text = cells[i].textContent.trim();
+      if (text.includes(',')) {
+        text = '"' + text.replace(/"/g,'""') + '"';
+      }
+      values.push(text);
+    }
+    lines.push(values.join(','));
+  });
+
+  const csvContent = lines.join('\n');
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  const today = new Date().toISOString().slice(0,10);
+  a.href = url;
+  a.download = 'diet-log-' + today + '.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+</script>
