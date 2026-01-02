@@ -1,119 +1,784 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Dumbell & Diet – Calorie Calculator</title>
-  <style>
-    body {
-      background: #000;
-      color: #fff;
-      font-family: Arial, sans-serif;
+<style>
+  :root {
+    --dd-bg: #050505;
+    --dd-card: #111111;
+    --dd-input: #202020;
+    --dd-border: #3a3a3a;
+    --dd-yellow: #ffc800;
+    --dd-text: #f5f5f5;
+    --dd-muted: #b3b3b3;
+    --dd-radius-card: 28px;
+    --dd-radius-field: 18px;
+    --dd-radius-goal: 22px;
+    --dd-shadow-soft: 0 18px 40px rgba(0,0,0,0.7);
+  }
+
+  body { background:#000; }
+
+  .dd-page {
+    max-width: 1100px;
+    margin: 40px auto 60px;
+    padding: 0 16px 40px;
+    color: var(--dd-text);
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  /* TOP TWO-COLUMN FEATURE STRIP */
+
+  .dd-feature-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid #333;
+    border-top: 1px solid #333;
+    margin-bottom: 40px;
+    column-gap: 0;
+  }
+
+  .dd-feature-block {
+    padding: 32px 32px 28px;
+    text-align: left;
+    position: relative;
+    display:flex;
+    align-items:center;
+    gap:16px;
+  }
+
+  .dd-feature-block:first-child {
+    border-right: 1px solid #333;
+  }
+
+  .dd-feature-icon {
+    flex:0 0 46px;
+    width:46px;
+    height:46px;
+    border-radius:50%;
+    border: 1px solid rgba(255,200,0,0.7);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: var(--dd-yellow);
+    font-weight: 700;
+    font-size: 20px;
+    background: radial-gradient(circle at 30% 0,#2b2614 0,#12100a 55%,#050505 100%);
+    box-shadow: 0 8px 18px rgba(0,0,0,0.8);
+  }
+
+  .dd-feature-text {
+    flex:1 1 auto;
+    display:block;
+  }
+
+  .dd-feature-title,
+  .dd-feature-list-line {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .dd-feature-list {
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+
+  .dd-feature-title span.lock,
+  .dd-feature-list-line span.lock {
+    font-size: 14px;
+    margin-left: 6px;
+    color: var(--dd-yellow);
+  }
+
+  .dd-feature-block.dd-clickable {
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .dd-feature-block.dd-clickable:hover {
+    background: radial-gradient(circle at top,#181818 0,#050505 60%,#000 100%);
+    box-shadow: 0 14px 32px rgba(0,0,0,0.7);
+    transform: translateY(-2px);
+  }
+
+  /* HERO SECTION */
+
+  .dd-hero {
+    text-align: center;
+    margin-bottom: 40px;
+    margin-top: 40px;
+  }
+
+  .dd-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.8);
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+    font-size: 13px;
+    color: var(--dd-muted);
+    margin-bottom: 16px;
+  }
+  .dd-badge-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    background: rgba(255,200,0,0.08);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color: var(--dd-yellow);
+    font-size: 13px;
+  }
+
+  .dd-hero-title {
+    font-size: 54px;
+    line-height: 1.05;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 800;
+    margin: 0 0 14px;
+  }
+  .dd-hero-title span.dd-highlight { color: var(--dd-yellow); }
+
+  .dd-hero-sub {
+    font-size: 24px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #c7c7c7;
+    margin-bottom: 22px;
+  }
+
+  .dd-hero-copy {
+    font-size: 17px;
+    max-width: 780px;
+    margin: 0 auto 6px;
+    color: var(--dd-muted);
+  }
+  .dd-hero-copy + .dd-hero-copy { margin-top: 4px; }
+
+  .dd-hero-cta-wrap { margin-top: 26px; }
+
+  .dd-hero-btn {
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding: 18px 40px;
+    border-radius: 999px;
+    border:none;
+    background: linear-gradient(90deg,#ffc800,#ffdd55);
+    color:#111;
+    font-weight:800;
+    font-size:16px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    cursor:pointer;
+    box-shadow: 0 20px 45px rgba(255,200,0,0.45);
+  }
+  .dd-hero-btn span.icon { font-size: 18px; }
+  .dd-hero-meta {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--dd-muted);
+  }
+
+  /* CALCULATOR CARD */
+
+  .dd-wrapper {
+    margin-top: 40px;
+    max-width: 980px;
+    margin-left:auto;
+    margin-right:auto;
+    padding: 32px 32px 40px;
+    border-radius: var(--dd-radius-card);
+    background: radial-gradient(circle at top left,#1b1b1b 0,#050505 55%,#000 100%);
+    color: var(--dd-text);
+    box-shadow: var(--dd-shadow-soft);
+  }
+
+  .dd-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+  .dd-field {
+    flex: 1 1 30%;
+    min-width: 220px;
+  }
+  .dd-label {
+    display:block;
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:0.02em;
+    margin-bottom:8px;
+    color:var(--dd-muted);
+  }
+  .dd-input,
+  .dd-select {
+    width:100%;
+    padding:14px 16px;
+    border-radius:var(--dd-radius-field);
+    border:1px solid var(--dd-border);
+    background:var(--dd-input);
+    color:var(--dd-text);
+    font-size:15px;
+    outline:none;
+    box-sizing:border-box;
+  }
+  .dd-input:focus,
+  .dd-select:focus { border-color:var(--dd-yellow); }
+
+  .dd-select {
+    appearance:none;
+    -moz-appearance:none;
+    -webkit-appearance:none;
+    background-image:linear-gradient(45deg,transparent 50%,#888 50%),
+                     linear-gradient(135deg,#888 50%,transparent 50%);
+    background-position:calc(100% - 16px) 16px, calc(100% - 11px) 16px;
+    background-size:7px 7px,7px 7px;
+    background-repeat:no-repeat;
+  }
+
+  .dd-section-title {
+    font-size:16px;
+    font-weight:600;
+    margin:12px 0 10px;
+  }
+
+  .dd-goal-row {
+    display:flex;
+    flex-wrap:wrap;
+    gap:18px;
+    margin-bottom:24px;
+  }
+  .dd-goal-card {
+    flex:1 1 30%;
+    min-width:220px;
+    border-radius:var(--dd-radius-goal);
+    border:1px solid var(--dd-border);
+    background:#111111;
+    padding:18px 16px;
+    text-align:center;
+    cursor:pointer;
+    transition:all 0.18s ease;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:6px;
+    position:relative;
+  }
+  .dd-goal-card span.dd-icon { font-size:20px; }
+  .dd-goal-title { font-size:16px;font-weight:600; }
+
+  .dd-goal-card.active {
+    border-color:var(--dd-yellow);
+    box-shadow:0 0 0 1px rgba(255,200,0,0.3);
+    background:linear-gradient(135deg,#181818,#101010);
+  }
+  .dd-goal-card input {
+    position:absolute;
+    opacity:0;
+    pointer-events:none;
+  }
+
+  .dd-btn-wrap { margin-top:8px; }
+  .dd-btn {
+    width:100%;
+    border-radius:999px;
+    border:none;
+    padding:18px 30px;
+    background:linear-gradient(90deg,#ffc800,#ffdd55);
+    color:#111;
+    font-weight:800;
+    font-size:16px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    cursor:pointer;
+    box-shadow:0 18px 38px rgba(255,200,0,0.4);
+  }
+  .dd-btn:hover { filter:brightness(1.05); }
+  .dd-btn-icon { font-size:18px; }
+
+  .dd-result {
+    margin-top:24px;
+    padding:24px 24px 22px;
+    border-radius:22px;
+    background:#111111;
+    border:1px solid #262626;
+    text-align:center;
+    display:none;
+  }
+  .dd-result-main {
+    font-size:34px;
+    font-weight:800;
+    color:var(--dd-yellow);
+  }
+  .dd-result-sub {
+    font-size:15px;
+    color:var(--dd-muted);
+    margin-top:6px;
+  }
+
+  /* HOOK + MACRO TEASER */
+
+  .dd-hook-text {
+    margin-top:18px;
+    color:var(--dd-muted);
+    max-width:780px;
+    margin-left:auto;
+    margin-right:auto;
+    line-height:1.6;
+  }
+  .dd-hook-highlight {
+    color:var(--dd-yellow);
+    font-weight:600;
+    font-size:16px;
+  }
+
+  .dd-hook-secondary {
+    margin-top:8px;
+    font-size:14px;
+  }
+
+  .dd-macro-teaser {
+    margin-top:24px;
+    padding:18px 18px 20px;
+    border-radius:22px;
+    background:#101010;
+    border:1px solid #262626;
+    text-align:left;
+  }
+
+  .dd-macro-header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    margin-bottom:16px;
+  }
+  .dd-macro-header-title {
+    font-size:16px;
+    text-transform:uppercase;
+    letter-spacing:0.18em;
+  }
+  .dd-macro-locked-badge {
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:4px 10px;
+    border-radius:999px;
+    border:1px solid rgba(255,200,0,0.4);
+    font-size:11px;
+    color:var(--dd-yellow);
+  }
+
+  .dd-macro-grid {
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .dd-macro-pill {
+    flex:1 1 30%;
+    min-width:150px;
+    border-radius:16px;
+    padding:14px 14px 12px;
+    background:#161616;
+    border:1px solid #292929;
+  }
+  .dd-macro-label {
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    color:var(--dd-muted);
+  }
+  .dd-macro-value {
+    margin-top:6px;
+    font-size:20px;
+    font-weight:700;
+    color:var(--dd-text);
+    filter:blur(6px);
+    position:relative;
+  }
+  .dd-macro-lock-icon {
+    position:absolute;
+    right:0;
+    top:0;
+    font-size:14px;
+    filter:none;
+  }
+
+  .dd-macro-cta-row {
+    margin-top:18px;
+    text-align:center;
+  }
+  .dd-macro-cta-copy {
+    font-size:15px;
+    color:var(--dd-muted);
+    margin-bottom:12px;
+  }
+  .dd-price-strike {
+    text-decoration:line-through;
+    opacity:0.6;
+    margin-right:6px;
+  }
+  .dd-price-current {
+    color:var(--dd-yellow);
+    font-weight:700;
+  }
+
+  .dd-unlock-btn {
+    padding:12px 32px;
+    border-radius:999px;
+    border:none;
+    background:linear-gradient(90deg,#ffc800,#ffdd55);
+    color:#111;
+    font-size:14px;
+    font-weight:800;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    cursor:pointer;
+    box-shadow:0 18px 40px rgba(255,200,0,0.5);
+  }
+
+  .dd-error {
+    margin-top:10px;
+    font-size:13px;
+    color:#ff6b6b;
+    text-align:center;
+    display:none;
+  }
+
+  @media (max-width: 900px) {
+    .dd-feature-strip {
+      grid-template-columns: 1fr;
     }
-    .container {
-      max-width: 500px;
-      margin: 50px auto;
-      padding: 25px;
-      background: #111;
-      border-radius: 12px;
+    .dd-feature-block:first-child {
+      border-right:none;
+      border-bottom:1px solid #333;
     }
-    h1 {
-      text-align: center;
-      color: #ffc800;
+  }
+
+  @media (max-width: 768px) {
+    .dd-hero-title {
+      font-size:34px;
     }
-    label {
-      display: block;
-      margin-top: 15px;
+    .dd-hero-sub {
+      font-size:18px;
+      letter-spacing:0.12em;
     }
-    input, select, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 6px;
-      border: none;
+    .dd-wrapper {
+      padding:24px 18px 28px;
+      border-radius:18px;
     }
-    button {
-      background: #ffc800;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 20px;
+    .dd-field { min-width:100%; }
+    .dd-goal-card { min-width:100%; }
+    .dd-result-main { font-size:28px; }
+  }
+</style>
+
+<div class="dd-page">
+
+  
+  <section class="dd-feature-strip">
+    <div class="dd-feature-block">
+      <div class="dd-feature-icon">🔥</div>
+      <div class="dd-feature-text">
+        <div class="dd-feature-title">1.&nbsp;&nbsp;DAILY CALORIE INTAKE</div>
+      </div>
+    </div>
+
+    <a href="/premium" class="dd-feature-block dd-clickable" style="text-decoration:none; color:inherit;">
+      <div class="dd-feature-icon">⚡</div>
+      <div class="dd-feature-text">
+        <div class="dd-feature-list">
+          <div class="dd-feature-list-line">
+            1.&nbsp;PROTEIN + CARBS + FATS BREAKDOWN<span class="lock">🔒</span>
+          </div>
+          <div class="dd-feature-list-line">
+            2.&nbsp;DIET PLANNER<span class="lock">🔒</span>
+          </div>
+        </div>
+      </div>
+    </a>
+  </section>
+
+  
+  <section class="dd-hero">
+    <div class="dd-badge">
+      <span class="dd-badge-icon">⚡</span>
+      <span>Science‑Based Precision</span>
+    </div>
+
+    <h1 class="dd-hero-title">
+      KNOW YOUR <span class="dd-highlight">CALORIES</span> FOR FREE
+    </h1>
+
+    <div class="dd-hero-sub">
+      GO DEEPER WITH PROTEINS, CARBS &amp; FATS
+    </div>
+
+    <p class="dd-hero-copy">
+      Get your personalized daily calorie intake based on your goals.
+    </p>
+    <p class="dd-hero-copy">
+      Upgrade to Pro for complete macro breakdown.
+    </p>
+
+    <div class="dd-hero-cta-wrap">
+      <button class="dd-hero-btn" onclick="document.getElementById('dd-calculator-section').scrollIntoView({behavior:'smooth'});">
+        <span>Start Free Calculator</span>
+        <span class="icon">⬇</span>
+      </button>
+      <div class="dd-hero-meta">
+        No signup required • Results in 30 seconds
+      </div>
+    </div>
+  </section>
+
+  
+  <section id="dd-calculator-section" class="dd-wrapper">
+    <div class="dd-row">
+      <div class="dd-field">
+        <label class="dd-label">Age (years)</label>
+        <input type="number" id="dd-age" class="dd-input" min="15" max="80" value="25">
+      </div>
+      <div class="dd-field">
+        <label class="dd-label">Height (cm)</label>
+        <input type="number" id="dd-height" class="dd-input" min="100" max="250" value="170">
+      </div>
+      <div class="dd-field">
+        <label class="dd-label">Weight (kg)</label>
+        <input type="number" id="dd-weight" class="dd-input" min="30" max="250" value="70">
+      </div>
+    </div>
+
+    <div class="dd-row">
+      <div class="dd-field" style="flex:1 1 100%;">
+        <label class="dd-label">Activity Level</label>
+        <select id="dd-activity" class="dd-select">
+          <option value="sedentary">Sedentary (no exercise)</option>
+          <option value="light">Light activity (1–3 hrs)</option>
+          <option value="moderate">Moderate activity (4–6 hrs)</option>
+          <option value="very">Very active (7–9 hrs)</option>
+          <option value="extra">Extra active (10+ hrs)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="dd-row" id="dd-hours-row" style="display:none;">
+      <div class="dd-field" style="flex:1 1 40%;min-width:260px;">
+        <label class="dd-label">Active hours per week</label>
+        <input type="number" id="dd-hours" class="dd-input" min="1" max="20" placeholder="e.g. 5">
+      </div>
+    </div>
+
+    <div class="dd-section-title">Your Goal</div>
+    <div class="dd-goal-row">
+      <label class="dd-goal-card" data-goal="loss">
+        <input type="radio" name="dd-goal" value="loss">
+        <span class="dd-icon">⤵️</span>
+        <span class="dd-goal-title">Weight Loss</span>
+      </label>
+
+      <label class="dd-goal-card" data-goal="maintain">
+        <input type="radio" name="dd-goal" value="maintain">
+        <span class="dd-icon">⚖️</span>
+        <span class="dd-goal-title">Maintain</span>
+      </label>
+
+      <label class="dd-goal-card" data-goal="bulk">
+        <input type="radio" name="dd-goal" value="bulk">
+        <span class="dd-icon">📈</span>
+        <span class="dd-goal-title">Lean Bulk</span>
+      </label>
+    </div>
+
+    <div class="dd-btn-wrap">
+      <button id="dd-calc-btn" class="dd-btn">
+        <span class="dd-btn-icon">🧮</span>
+        <span>Calculate My Calories</span>
+      </button>
+    </div>
+
+    <div id="dd-result" class="dd-result">
+      <div class="dd-result-main" id="dd-calorie-value">0 kcal</div>
+      <div class="dd-result-sub">
+        Estimated daily calorie intake based on your BMR, activity level and goal.
+      </div>
+
+      <div class="dd-hook-text">
+        <div class="dd-hook-highlight">
+          As per research, the human body preserves up to 30% more muscle mass during fat loss when PROTEIN intake is accurately matched to individual needs.
+        </div>
+        <div class="dd-hook-secondary">
+          Knowing only calories is not enough — your protein, carbs and fats must be dialled in for real results.
+        </div>
+      </div>
+
+      <div class="dd-macro-teaser">
+        <div class="dd-macro-header">
+          <div class="dd-macro-header-title">Macro Breakdown (locked)</div>
+          <div class="dd-macro-locked-badge">
+            🔒 Pro feature
+          </div>
+        </div>
+
+        <div class="dd-macro-grid">
+          <div class="dd-macro-pill">
+            <div class="dd-macro-label">Protein (g / day)</div>
+            <div class="dd-macro-value" id="dd-protein-val">
+              --
+              <span class="dd-macro-lock-icon">🔒</span>
+            </div>
+          </div>
+          <div class="dd-macro-pill">
+            <div class="dd-macro-label">Carbohydrates (g / day)</div>
+            <div class="dd-macro-value" id="dd-carbs-val">
+              --
+              <span class="dd-macro-lock-icon">🔒</span>
+            </div>
+          </div>
+          <div class="dd-macro-pill">
+            <div class="dd-macro-label">Fats (g / day)</div>
+            <div class="dd-macro-value" id="dd-fats-val">
+              --
+              <span class="dd-macro-lock-icon">🔒</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dd-macro-cta-row">
+          <p class="dd-macro-cta-copy">
+            Unlock your exact protein, carbs &amp; fats tailored to this calorie target and goal.
+            <br>
+            <span class="dd-price-strike">₹119</span>
+            <span class="dd-price-current">₹49 – one‑time</span>
+          </p>
+          <button class="dd-unlock-btn" onclick="window.location.href='/web/login?redirect=/shop/proteincrabsfatsdiet-tracker-2';">
+            Unlock Macros
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="dd-error" class="dd-error"></div>
+  </section>
+</div>
+
+<script>
+(function () {
+  const heightEl   = document.getElementById('dd-height');
+  const weightEl   = document.getElementById('dd-weight');
+  const ageEl      = document.getElementById('dd-age');
+  const activityEl = document.getElementById('dd-activity');
+  const hoursRow   = document.getElementById('dd-hours-row');
+  const hoursEl    = document.getElementById('dd-hours');
+  const btn        = document.getElementById('dd-calc-btn');
+  const resultBox  = document.getElementById('dd-result');
+  const calorieVal = document.getElementById('dd-calorie-value');
+  const errorBox   = document.getElementById('dd-error');
+
+  const goalCards  = document.querySelectorAll('.dd-goal-card');
+
+  const proteinValEl = document.getElementById('dd-protein-val');
+  const carbsValEl   = document.getElementById('dd-carbs-val');
+  const fatsValEl    = document.getElementById('dd-fats-val');
+
+  activityEl.addEventListener('change', function () {
+    if (this.value && this.value !== 'sedentary') {
+      hoursRow.style.display = 'flex';
+    } else {
+      hoursRow.style.display = 'none';
+      hoursEl.value = '';
     }
-  </style>
-</head>
+  });
 
-<body>
-  <div class="container">
-    <h1>Dumbell & Diet</h1>
+  goalCards.forEach(card => {
+    card.addEventListener('click', function () {
+      goalCards.forEach(c => c.classList.remove('active'));
+      this.classList.add('active');
+      const input = this.querySelector('input[type="radio"]');
+      if (input) input.checked = true;
+    });
+  });
 
-    <label>Age (years)</label>
-    <input type="number" id="age" />
+  function getActivityMultiplier(level, hours) {
+    hours = Number(hours) || 0;
+    if (level === 'sedentary') return 1.15;
 
-    <label>Height (cm)</label>
-    <input type="number" id="height" />
-
-    <label>Weight (kg)</label>
-    <input type="number" id="weight" />
-
-    <label>Activity Level</label>
-    <select id="activity">
-      <option value="sedentary">Sedentary</option>
-      <option value="light">Light (1–3 hrs)</option>
-      <option value="moderate">Moderate (4–6 hrs)</option>
-      <option value="very">Very Active (7–9 hrs)</option>
-      <option value="extra">Extra Active (10+ hrs)</option>
-    </select>
-
-    <label>Goal</label>
-    <select id="goal">
-      <option value="loss">Weight Loss</option>
-      <option value="maintain">Maintain</option>
-      <option value="bulk">Lean Bulk</option>
-    </select>
-
-    <button onclick="calculateCalories()">Calculate & Unlock Macros</button>
-  </div>
-
-  <script>
-    function calculateCalories() {
-      const age = Number(document.getElementById("age").value);
-      const height = Number(document.getElementById("height").value);
-      const weight = Number(document.getElementById("weight").value);
-      const activity = document.getElementById("activity").value;
-      const goal = document.getElementById("goal").value;
-
-      if (!age || !height || !weight) {
-        alert("Please fill all fields");
-        return;
-      }
-
-      // BMR
-      const BMR = (10 * weight) + (6.25 * height) - (5 * age) + 5;
-
-      // Activity multiplier
-      let multiplier = 1.15;
-      if (activity === "light") multiplier = 1.3;
-      if (activity === "moderate") multiplier = 1.5;
-      if (activity === "very") multiplier = 1.7;
-      if (activity === "extra") multiplier = 1.9;
-
-      const TDEE = BMR * multiplier;
-
-      let calories = TDEE;
-      if (goal === "loss") calories = TDEE * 0.75;
-      if (goal === "bulk") calories = TDEE * 1.1;
-
-      const userData = {
-        age,
-        height,
-        weight,
-        activity,
-        goal,
-        calories: Math.round(calories)
-      };
-
-      localStorage.setItem("dd_user_data", JSON.stringify(userData));
-
-      window.location.href = "Dashboard.html";
+    function mapHours(hMin, hMax, mMin, mMax) {
+      if (hours <= hMin) return mMin;
+      if (hours >= hMax) return mMax;
+      const ratio = (hours - hMin) / (hMax - hMin);
+      return mMin + (mMax - mMin) * ratio;
     }
-  </script>
-</body>
-</html>
+
+    switch (level) {
+      case 'light':    return mapHours(1, 3, 1.25, 1.35);
+      case 'moderate': return mapHours(4, 6, 1.40, 1.55);
+      case 'very':     return mapHours(7, 9, 1.60, 1.75);
+      case 'extra':    return mapHours(10,14, 1.80, 1.95);
+      default:         return 1.15;
+    }
+  }
+
+  function computeMacros(calories, goal) {
+    let pPct, cPct, fPct;
+    if (goal === 'loss') {
+      pPct = 0.40; cPct = 0.40; fPct = 0.20;
+    } else if (goal === 'maintain') {
+      pPct = 0.30; cPct = 0.45; fPct = 0.25;
+    } else if (goal === 'bulk') {
+      pPct = 0.25; cPct = 0.55; fPct = 0.20;
+    } else {
+      return { protein: 0, carbs: 0, fats: 0 };
+    }
+    const protein = Math.round((calories * pPct) / 4);
+    const carbs   = Math.round((calories * cPct) / 4);
+    const fats    = Math.round((calories * fPct) / 9);
+    return { protein, carbs, fats };
+  }
+
+  btn.addEventListener('click', function () {
+    errorBox.style.display = 'none';
+    resultBox.style.display = 'none';
+
+    const height = Number(heightEl.value);
+    const weight = Number(weightEl.value);
+    const age    = Number(ageEl.value);
+    const activity = activityEl.value;
+    const hours    = hoursEl.value;
+    const goalInput = document.querySelector('input[name="dd-goal"]:checked');
+    const goal = goalInput ? goalInput.value : null;
+
+    if (!height || !weight || !age || !activity || !goal ||
+        (activity !== 'sedentary' && !hours)) {
+      errorBox.textContent = 'Please fill in all fields (including hours for non‑sedentary activity).';
+      errorBox.style.display = 'block';
+      return;
+    }
+
+    const BMR = 10 * weight + 6.25 * height - 5 * age + 5;
+    const multiplier = getActivityMultiplier(activity, hours);
+    const TDEE = BMR * multiplier;
+
+    let calorieIntake = TDEE;
+    if (goal === 'loss')       calorieIntake = TDEE * 0.75;
+    else if (goal === 'maintain') calorieIntake = TDEE * 1.0;
+    else if (goal === 'bulk')  calorieIntake = TDEE * 1.10;
+
+    const rounded = Math.round(calorieIntake);
+    calorieVal.textContent = rounded + ' kcal';
+
+    const macros = computeMacros(rounded, goal);
+    proteinValEl.textContent = macros.protein + ' g';
+    carbsValEl.textContent   = macros.carbs + ' g';
+    fatsValEl.textContent    = macros.fats + ' g';
+
+    resultBox.style.display = 'block';
+  });
+})();
+</script>
