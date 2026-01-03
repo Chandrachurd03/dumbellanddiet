@@ -445,6 +445,19 @@
   carbs   = Math.round(carbs);
   fats    = Math.round(fats);
   // ===============================
+// MAKE MACROS AVAILABLE FOR DIET TRACKER
+// ===============================
+data.protein = protein;
+data.carbs = carbs;
+data.fats = fats;
+
+// overwrite dashboard data with macros included
+localStorage.setItem(
+  "dumbell_diet_dashboard_data",
+  JSON.stringify(data)
+);
+
+  // ===============================
 // SAVE THIS CALCULATION TO HISTORY
 // ===============================
 
@@ -494,6 +507,7 @@ localStorage.setItem("dd_calc_history", JSON.stringify(history));
   .replace(/{{\s*last_f_2\s*}}/g, history[1]?.fats || "-");
 
 </script>
+
 
 
 
