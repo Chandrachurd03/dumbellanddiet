@@ -336,24 +336,6 @@
     </div>
 
     
-    <div class="dd-metrics-row">
-      <div class="dd-metric-card">
-        <div class="dd-metric-value">{{ bmr }}</div>
-        <div class="dd-metric-label">BMR</div>
-      </div>
-      <div class="dd-metric-card">
-        <div class="dd-metric-value">{{ tdee }}</div>
-        <div class="dd-metric-label">TDEE</div>
-      </div>
-      <div class="dd-metric-card">
-        <div class="dd-metric-value">{{ weight_kg }}kg</div>
-        <div class="dd-metric-label">Weight</div>
-      </div>
-      <div class="dd-metric-card">
-        <div class="dd-metric-value">{{ height_cm }}cm</div>
-        <div class="dd-metric-label">Height</div>
-      </div>
-    </div>
 
     <div class="dd-macro-section-title">Macro Breakdown</div>
 
@@ -375,10 +357,10 @@
     <div class="dd-macro-footer">
       Customize and download your personalized diet log template (included in your ₹49 Pro plan).
       <br>
-      <button class="dd-download-btn">
+      <a href="diet-tracker.html" class="dd-download-btn">
         <span class="dd-download-btn-icon">⬇</span>
         <span>Customize and Download Diet Log Template</span>
-      </button>
+      </a>
     </div>
   </section>
 
@@ -413,7 +395,7 @@
   </section>
 
   <div class="dd-newcalc-wrap">
-    <button class="dd-newcalc-btn" onclick="window.location.href='/your-free-calculator-url';">
+    <button class="dd-newcalc-btn" onclick="window.location.href='index.html';">
       New Calculation
     </button>
   </div>
@@ -462,17 +444,57 @@
   protein = Math.round(protein);
   carbs   = Math.round(carbs);
   fats    = Math.round(fats);
+  // ===============================
+// SAVE THIS CALCULATION TO HISTORY
+// ===============================
+
+// 1. Get existing history (or empty list)
+let history = JSON.parse(localStorage.getItem("dd_calc_history")) || [];
+
+// 2. Add current calculation at the top
+history.unshift({
+  date: new Date().toLocaleDateString(),
+  calories: calories,
+  goal: goal,
+  protein: protein,
+  carbs: carbs,
+  fats: fats
+});
+
+// 3. Keep only last 3 calculations
+history = history.slice(0, 2);
+
+// 4. Save back to localStorage
+localStorage.setItem("dd_calc_history", JSON.stringify(history));
+
 
   // ===============================
   // REPLACE PLACEHOLDERS (NO UI CHANGE)
   // ===============================
   document.body.innerHTML = document.body.innerHTML
-    .replace(/{{\s*calories\s*}}/g, calories)
-    .replace(/{{\s*protein_g\s*}}/g, protein)
-    .replace(/{{\s*carb_g\s*}}/g, carbs)
-    .replace(/{{\s*fat_g\s*}}/g, fats)
-    .replace(/{{\s*goal\s*}}/g, goal);
+  .replace(/{{\s*calories\s*}}/g, calories)
+  .replace(/{{\s*protein_g\s*}}/g, protein)
+  .replace(/{{\s*carb_g\s*}}/g, carbs)
+  .replace(/{{\s*fat_g\s*}}/g, fats)
+
+  // History – most recent
+  .replace(/{{\s*last_date_1\s*}}/g, history[0]?.date || "-")
+  .replace(/{{\s*last_calories_1\s*}}/g, history[0]?.calories || "-")
+  .replace(/{{\s*last_goal_1\s*}}/g, history[0]?.goal || "-")
+  .replace(/{{\s*last_p_1\s*}}/g, history[0]?.protein || "-")
+  .replace(/{{\s*last_c_1\s*}}/g, history[0]?.carbs || "-")
+  .replace(/{{\s*last_f_1\s*}}/g, history[0]?.fats || "-")
+
+  // History – previous
+  .replace(/{{\s*last_date_2\s*}}/g, history[1]?.date || "-")
+  .replace(/{{\s*last_calories_2\s*}}/g, history[1]?.calories || "-")
+  .replace(/{{\s*last_goal_2\s*}}/g, history[1]?.goal || "-")
+  .replace(/{{\s*last_p_2\s*}}/g, history[1]?.protein || "-")
+  .replace(/{{\s*last_c_2\s*}}/g, history[1]?.carbs || "-")
+  .replace(/{{\s*last_f_2\s*}}/g, history[1]?.fats || "-");
+
 </script>
+
 
 
 
