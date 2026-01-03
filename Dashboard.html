@@ -438,7 +438,7 @@
 
   if (!storedData) {
     alert("Please calculate your calories first.");
-    window.location.href = "index.html";
+    window.location.href = "login.html";
   }
 
   const data = JSON.parse(storedData);
@@ -537,6 +537,7 @@ localStorage.setItem("dd_calc_history", JSON.stringify(history));
   .replace(/{{\s*last_f_2\s*}}/g, history[1]?.fats || "-");
 
 </script>
+
 
 
 
