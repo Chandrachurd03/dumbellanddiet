@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dumbell & Diet – Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    body {
+      background: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .login-box {
+      background: #111;
+      padding: 30px;
+      width: 320px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 5px;
+      border: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      background: #f5c400;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .google-btn {
+      background: #fff;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-box">
+  <h2>Dumbell & Diet</h2>
+
+  <input type="email" id="email" placeholder="Email" required>
+  <input type="password" id="password" placeholder="Password" required>
+
+  <button onclick="loginWithEmail()">Login / Sign Up</button>
+
+  <hr style="margin: 20px 0;">
+
+  <button class="google-btn" onclick="loginWithGoogle()">
+    Continue with Google
+  </button>
+</div>
+  <!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+  <script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAsAA44Z61TYMz1611Z6Iy6GGtEWj0wbwM",
+    authDomain: "dumbellanddiet-344f6.firebaseapp.com",
+    projectId: "dumbellanddiet-344f6",
+    storageBucket: "dumbellanddiet-344f6.appspot.com",
+    messagingSenderId: "757117380616",
+    appId: "1:757117380616:web:4ecf36f304ed8f4e1d89bd"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+</script>
+
+  <script>
+  function loginWithEmail() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    if (!email || !password) {
+      alert("Please enter email and password");
+      return;
+    }
+
+    auth.signInWithEmailAndPassword(email, password)
+      .then(() => {
+        window.location.href = "Dashboard.html";
+      })
+      .catch(() => {
+        auth.createUserWithEmailAndPassword(email, password)
+          .then(() => {
+            window.location.href = "Dashboard.html";
+          })
+          .catch(err => alert(err.message));
+      });
+  }
+
+  function loginWithGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider)
+      .then(() => {
+        window.location.href = "Dashboard.html";
+      })
+      .catch(err => alert(err.message));
+  }
+</script>
+</body>
+</html>
+
+
