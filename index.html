@@ -791,7 +791,7 @@ const dashboardPayload = {
   activityLevel: activity,
   activityHours: hours,
   goal: goal,
-  calories: Math.round(calories)
+  calories: rounded
 };
 
 localStorage.setItem(
@@ -802,6 +802,7 @@ localStorage.setItem(
   });
 })();
 </script>
+
 
 
 
