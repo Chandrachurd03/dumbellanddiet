@@ -781,8 +781,27 @@
     fatsValEl.textContent    = macros.fats + ' g';
 
     resultBox.style.display = 'block';
+    // ===============================
+// SAVE DATA FOR DASHBOARD (NO UI CHANGE)
+// ===============================
+const dashboardPayload = {
+  height: height,
+  weight: weight,
+  age: age,
+  activityLevel: activity,
+  activityHours: hours,
+  goal: goal,
+  calories: Math.round(calories)
+};
+
+localStorage.setItem(
+  "dumbell_diet_dashboard_data",
+  JSON.stringify(dashboardPayload)
+);
+
   });
 })();
 </script>
+
 
 
