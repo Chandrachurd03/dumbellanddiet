@@ -433,6 +433,23 @@
 </div>
 
 <script>
+  <script>
+// ===============================
+// LOAD TARGETS FROM DASHBOARD
+// ===============================
+const dashboardData = JSON.parse(
+  localStorage.getItem("dumbell_diet_dashboard_data")
+);
+
+if (dashboardData) {
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("targetCalories").value = dashboardData.calories;
+    document.getElementById("targetProtein").value  = Math.round(dashboardData.protein || 0);
+    document.getElementById("targetCarbs").value    = Math.round(dashboardData.carbs || 0);
+    document.getElementById("targetFats").value     = Math.round(dashboardData.fats || 0);
+  });
+}
+
 const foodDB = {
   "Amul Paneer": { kcal: 312.0, protein: 20.0, carbs: 4.0, fats: 24.0 },
   "Soya Chunks": { kcal: 345.0, protein: 52.0, carbs: 33.0, fats: 0.5 },
@@ -643,4 +660,5 @@ function downloadMealCSV() {
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
+
 </script>
