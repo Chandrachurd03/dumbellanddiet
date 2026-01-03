@@ -407,13 +407,15 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 
 <script>
   const firebaseConfig = {
     apiKey: "AIzaSyAsAA44Z61TYMz1611Z6Iy6GGtEWj0wbwM",
     authDomain: "dumbellanddiet-344f6.firebaseapp.com",
     projectId: "dumbellanddiet-344f6",
-    storageBucket: "dumbellanddiet-344f6.appspot.app",
+    storageBucket: "dumbellanddiet-344f6.appspot.com",
     messagingSenderId: "757117380616",
     appId: "1:757117380616:web:4ecf36f304ed8f4e1d89bd"
   };
@@ -429,6 +431,29 @@
     }
   });
 </script>
+<script>
+  function payForMacros() {
+    const options = {
+      key: "xxxxx", // 🔴 replace with your Razorpay TEST key
+      amount: 4900, // ₹49 in paise
+      currency: "INR",
+      name: "Dumbell & Diet",
+      description: "Macro Breakdown Access",
+      handler: function () {
+        localStorage.setItem("dd_is_pro", "true");
+        alert("Payment successful! Pro unlocked.");
+        window.location.reload();
+      },
+      theme: {
+        color: "#ffc800"
+      }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+  }
+</script>
+
 
 <script>
   // ===============================
@@ -442,6 +467,8 @@
   }
 
   const data = JSON.parse(storedData);
+  const isProUser = localStorage.getItem("dd_is_pro") === "true";
+
 
   const calories = data.calories;
   const goal = data.goal;
@@ -509,6 +536,16 @@ history = history.slice(0, 2);
 
 // 4. Save back to localStorage
 localStorage.setItem("dd_calc_history", JSON.stringify(history));
+  if (!isProUser) {
+  document.querySelector(".dd-macro-row").innerHTML = `
+    <button onclick="payForMacros()" class="dd-download-btn">
+      Unlock Macro Breakdown – ₹49
+    </button>
+  `;
+
+  document.querySelector(".dd-pro-badge").style.display = "none";
+}
+
 
 
   // ===============================
@@ -537,6 +574,7 @@ localStorage.setItem("dd_calc_history", JSON.stringify(history));
   .replace(/{{\s*last_f_2\s*}}/g, history[1]?.fats || "-");
 
 </script>
+
 
 
 
