@@ -318,7 +318,7 @@
       YOUR <span class="highlight">DASHBOARD</span>
     </div>
     <div class="dd-header-sub">
-      Based on your last free calorie calculation of <strong>{{ calories }}</strong> kcal and goal: {{ goal }}.
+      Based on your last free calorie calculation of <strong>{{ calories }}</strong> kcal.
     </div>
   </div>
 
@@ -507,6 +507,7 @@ localStorage.setItem("dd_calc_history", JSON.stringify(history));
   .replace(/{{\s*last_f_2\s*}}/g, history[1]?.fats || "-");
 
 </script>
+
 
 
 
