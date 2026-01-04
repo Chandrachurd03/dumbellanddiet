@@ -468,6 +468,10 @@
 
   const data = JSON.parse(storedData);
   const isProUser = localStorage.getItem("dd_is_pro") === "true";
+  if (isProUser) {
+  document.querySelector(".dd-pro-badge").style.display = "inline-flex";
+}
+
 
 
   const calories = data.calories;
@@ -536,16 +540,7 @@ history = history.slice(0, 2);
 
 // 4. Save back to localStorage
 localStorage.setItem("dd_calc_history", JSON.stringify(history));
-  if (!isProUser) {
-  document.querySelector(".dd-macro-row").innerHTML = `
-    <button onclick="payForMacros()" class="dd-download-btn">
-      Unlock Macro Breakdown – ₹49
-    </button>
-  `;
-
-  document.querySelector(".dd-pro-badge").style.display = "none";
-    document.querySelector(".dd-macro-footer").style.display = "none"
-}
+  
 if (!isProUser) {
   // Hide macros & replace with payment CTA
   document.querySelector(".dd-macro-row").innerHTML = `
@@ -589,6 +584,7 @@ if (!isProUser) {
   .replace(/{{\s*last_f_2\s*}}/g, history[1]?.fats || "-");
 
 </script>
+
 
 
 
