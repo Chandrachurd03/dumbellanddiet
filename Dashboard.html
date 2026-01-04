@@ -468,8 +468,7 @@
 
   const data = JSON.parse(storedData);
   const isProUser = localStorage.getItem("dd_is_pro") === "true";
-  if (isProUser) {
-  document.querySelector(".dd-pro-badge").style.display = "inline-flex";
+
 }
 
 
@@ -582,8 +581,11 @@ if (!isProUser) {
   .replace(/{{\s*last_p_2\s*}}/g, history[1]?.protein || "-")
   .replace(/{{\s*last_c_2\s*}}/g, history[1]?.carbs || "-")
   .replace(/{{\s*last_f_2\s*}}/g, history[1]?.fats || "-");
+    if (isProUser) {
+  document.querySelector(".dd-pro-badge").style.display = "inline-flex";
 
 </script>
+
 
 
 
