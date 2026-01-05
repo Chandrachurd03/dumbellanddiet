@@ -454,12 +454,31 @@
     firebase.initializeApp(firebaseConfig);
   }
 
+  // ===============================
+  // AUTH + PRO ACCESS CHECK
+  // ===============================
   firebase.auth().onAuthStateChanged((user) => {
+
+    // 1️⃣ Not logged in → send to login
     if (!user) {
       window.location.href = "login.html";
+      return;
     }
+
+    // 2️⃣ Logged in but NOT paid → send to payment
+    const isPro = localStorage.getItem("dd_is_pro");
+
+    if (isPro !== "true") {
+      window.location.href = "pay.html";
+      return;
+    }
+
+    // 3️⃣ Logged in + paid → diet tracker allowed
+    // (Nothing else needed here)
   });
 </script>
+
+
 
 
 <script>
@@ -691,5 +710,6 @@ function downloadMealCSV() {
 }
 
 </script>
+
 
 
