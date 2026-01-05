@@ -425,10 +425,23 @@
     firebase.initializeApp(firebaseConfig);
   }
 
+  // 🔐 AUTH + PAYMENT CHECK (UPDATED)
   firebase.auth().onAuthStateChanged((user) => {
+
+    // Not logged in → login page
     if (!user) {
       window.location.href = "login.html";
+      return;
     }
+
+    // Logged in but not paid → payment page
+    const isPro = localStorage.getItem("dd_is_pro");
+    if (!isPro) {
+      window.location.href = "pay.html";
+      return;
+    }
+
+    // Logged in + paid → dashboard allowed
   });
 </script>
 <script>
@@ -586,6 +599,7 @@ if (!isProUser) {
   document.querySelector(".dd-pro-badge").style.display = "inline-flex";
 
 </script>
+
 
 
 
