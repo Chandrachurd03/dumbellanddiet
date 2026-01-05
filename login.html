@@ -100,12 +100,12 @@
 
     auth.signInWithEmailAndPassword(email, password)
       .then(() => {
-        window.location.href = "index.html";
+        window.location.href = "pay.html";
       })
       .catch(() => {
         auth.createUserWithEmailAndPassword(email, password)
           .then(() => {
-            window.location.href = "index.html";
+            window.location.href = "pay.html";
           })
           .catch(err => alert(err.message));
       });
@@ -115,7 +115,7 @@
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider)
       .then(() => {
-        window.location.href = "index.html";
+        window.location.href = "pay.html";
       })
       .catch(err => alert(err.message));
   }
