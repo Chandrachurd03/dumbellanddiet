@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dumbell & Diet – Unlock Pro</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body style="background:black;color:white;text-align:center;padding-top:80px;font-family:Arial">
+
+<h2>Dumbell & Diet</h2>
+<p>Unlock Macro Breakdown + Diet Tracker</p>
+<h3 style="color:#ffc800">₹49 – One Time</h3>
+
+<button onclick="payNow()" style="
+  padding:14px 32px;
+  font-size:16px;
+  font-weight:bold;
+  background:#ffc800;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+">
+Pay ₹49 & Unlock
+</button>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+function payNow() {
+  const options = {
+    key: "rzp_test_RziFlu1OYPtgAm", // replace with LIVE later
+    amount: 4900,
+    currency: "INR",
+    name: "Dumbell & Diet",
+    description: "Macro Breakdown Access",
+    handler: function () {
+      localStorage.setItem("dd_is_pro", "true");
+      window.location.href = "Dashboard.html";
+    }
+  };
+  new Razorpay(options).open();
+}
+</script>
+
+</body>
+</html>
