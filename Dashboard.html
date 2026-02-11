@@ -425,19 +425,7 @@
     firebase.initializeApp(firebaseConfig);
   }
 
-  // 🔐 AUTH + PAYMENT CHECK (UPDATED)
-  <!--
-<script>
-  firebase.auth().onAuthStateChanged((user) => {
-
-    // Not logged in → login page
-    if (!user) {
-      window.location.href = "login.html";
-      return;
-    }
-    });
-</script>
--->
+ 
 
     // Logged in but not paid → payment page
     const isPro = localStorage.getItem("dd_is_pro");
@@ -625,6 +613,7 @@ if (!isProUser) {
   document.querySelector(".dd-pro-badge").style.display = "inline-flex";
 
 </script>
+
 
 
 
