@@ -437,7 +437,7 @@
     // Logged in but not paid → payment page
     const isPro = localStorage.getItem("dd_is_pro");
     if (!isPro) {
-      window.location.href = "pay.html";
+      window.location.href = "login.html";
       return;
     }
 
@@ -620,6 +620,7 @@ if (!isProUser) {
   document.querySelector(".dd-pro-badge").style.display = "inline-flex";
 
 </script>
+
 
 
 
