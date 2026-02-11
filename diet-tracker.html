@@ -432,40 +432,6 @@
   </div>
 </div>
 
-<!-- ===============================
-     AUTH PROTECTION (DO NOT MOVE)
-     =============================== -->
-
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-
-<script>
-  const firebaseConfig = {
-  apiKey: "YOUR_FIREBASE_API_KEY",
-  authDomain: "YOUR_FIREBASE_AUTH_DOMAIN",
-  projectId: "YOUR_FIREBASE_PROJECT_ID",
-  storageBucket: "YOUR_FIREBASE_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_FIREBASE_SENDER_ID",
-  appId: "YOUR_FIREBASE_APP_ID"
-  };
-
-  // Prevent double initialization
-  if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-  }
-
-  // ===============================
-  // AUTH + PRO ACCESS CHECK
-  // ===============================
-
-
-    // 2️⃣ Logged in but NOT paid → send to payment
-    const isPro = localStorage.getItem("dd_is_pro");
-
-    if (isPro !== "true") {
-      window.location.href = "pay.html";
-      return;
-    }
 
     // 3️⃣ Logged in + paid → diet tracker allowed
     // (Nothing else needed here)
@@ -704,6 +670,7 @@ function downloadMealCSV() {
 }
 
 </script>
+
 
 
 
