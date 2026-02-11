@@ -111,14 +111,11 @@
       });
   }
 
-  function loginWithGoogle() {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider)
-      .then(() => {
-        window.location.href = "pay.html";
-      })
-      .catch(err => alert(err.message));
-  }
+function loginWithGoogle() {
+  // 🚧 DEV MODE: Skip Firebase Google login
+  window.location.href = "Dashboard.html";
+}
+
 </script>
 </body>
 </html>
